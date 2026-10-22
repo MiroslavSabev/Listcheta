@@ -9,8 +9,12 @@
 /* Begin PBXBuildFile section */
 		D10EE20930549A9400A6C6D9 /* SelectGameTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10EE20830549A8D00A6C6D9 /* SelectGameTypeView.swift */; };
 		D10EE20C30549EB600A6C6D9 /* ActionCard_Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10EE20B30549EAC00A6C6D9 /* ActionCard_Mode.swift */; };
+		D16746AE307BC5D700DDF4DD /* Indicator_ProgressDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16746AD307BC5D600DDF4DD /* Indicator_ProgressDots.swift */; };
+		D16746B0307BC62B00DDF4DD /* ContentCard_PlayerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16746AF307BC62A00DDF4DD /* ContentCard_PlayerBar.swift */; };
+		D16746B2307BC65B00DDF4DD /* EnterWordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16746B1307BC65900DDF4DD /* EnterWordsView.swift */; };
 		D16A224730691FD9003CF6D4 /* AddPlayersNamesSreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16A224630691FA9003CF6D4 /* AddPlayersNamesSreen.swift */; };
 		D16A224930692185003CF6D4 /* TeamPlayersColumn.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16A224830692178003CF6D4 /* TeamPlayersColumn.swift */; };
+		D179071B308A8B7F00C32983 /* WordsFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D179071A308A8B7D00C32983 /* WordsFlowView.swift */; };
 		D17F5D043051EEA20096EE02 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17F5D033051EE9D0096EE02 /* PrimaryButtonStyle.swift */; };
 		D17F5D063051F48F0096EE02 /* GhostButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17F5D053051F4890096EE02 /* GhostButtonStyle.swift */; };
 		D18E68C230476933000EC973 /* AccentButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18E68C13047691C000EC973 /* AccentButtonStyle.swift */; };
@@ -30,8 +34,12 @@
 /* Begin PBXFileReference section */
 		D10EE20830549A8D00A6C6D9 /* SelectGameTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectGameTypeView.swift; sourceTree = "<group>"; };
 		D10EE20B30549EAC00A6C6D9 /* ActionCard_Mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCard_Mode.swift; sourceTree = "<group>"; };
+		D16746AD307BC5D600DDF4DD /* Indicator_ProgressDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator_ProgressDots.swift; sourceTree = "<group>"; };
+		D16746AF307BC62A00DDF4DD /* ContentCard_PlayerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCard_PlayerBar.swift; sourceTree = "<group>"; };
+		D16746B1307BC65900DDF4DD /* EnterWordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterWordsView.swift; sourceTree = "<group>"; };
 		D16A224630691FA9003CF6D4 /* AddPlayersNamesSreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayersNamesSreen.swift; sourceTree = "<group>"; };
 		D16A224830692178003CF6D4 /* TeamPlayersColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamPlayersColumn.swift; sourceTree = "<group>"; };
+		D179071A308A8B7D00C32983 /* WordsFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsFlowView.swift; sourceTree = "<group>"; };
 		D17F5D033051EE9D0096EE02 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
 		D17F5D053051F4890096EE02 /* GhostButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostButtonStyle.swift; sourceTree = "<group>"; };
 		D18E68C13047691C000EC973 /* AccentButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentButtonStyle.swift; sourceTree = "<group>"; };
@@ -73,9 +81,11 @@
 			isa = PBXGroup;
 			children = (
 				D16A224630691FA9003CF6D4 /* AddPlayersNamesSreen.swift */,
+				D16746B1307BC65900DDF4DD /* EnterWordsView.swift */,
 				D19EE9F8305D85F2005EB652 /* Base */,
 				D1C23604305C93A2009F314B /* EnterTeamsNamesView.swift */,
 				D10EE20830549A8D00A6C6D9 /* SelectGameTypeView.swift */,
+				D179071A308A8B7D00C32983 /* WordsFlowView.swift */,
 				D1AB5BA03045F9CD00E56C01 /* StartupView.swift */,
 			);
 			path = Views;
@@ -85,6 +95,8 @@
 			isa = PBXGroup;
 			children = (
 				D1C2361A305D1F0F009F314B /* InputCard_TeamName.swift */,
+				D1BCC55D3078254F00E47DA6 /* InputCard_WordRow.swift */,
+				D16746AF307BC62A00DDF4DD /* ContentCard_PlayerBar.swift */,
 				D1D6D89B3058925400ADB4A6 /* ContentCard_TeamPreview.swift */,
 				D10EE20B30549EAC00A6C6D9 /* ActionCard_Mode.swift */,
 			);
@@ -95,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				D16A224830692178003CF6D4 /* TeamPlayersColumn.swift */,
+				D16746AD307BC5D600DDF4DD /* Indicator_ProgressDots.swift */,
 				D1D6D89D3058978800ADB4A6 /* Chips */,
 				D1D6D8843056BA9E00ADB4A6 /* Headers */,
 				D10EE20A30549E9000A6C6D9 /* Cards */,
@@ -267,10 +280,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D16746B2307BC65B00DDF4DD /* EnterWordsView.swift in Sources */,
 				D1AB5BA93045F9F900E56C01 /* ApplicationColors.swift in Sources */,
+				D179071B308A8B7F00C32983 /* WordsFlowView.swift in Sources */,
+				D1BCC55E3078255100E47DA6 /* InputCard_WordRow.swift in Sources */,
 				D1C23605305C93B0009F314B /* EnterTeamsNamesView.swift in Sources */,
 				D1C2361B305D1F22009F314B /* InputCard_TeamName.swift in Sources */,
 				D10EE20C30549EB600A6C6D9 /* ActionCard_Mode.swift in Sources */,
+				D16746AE307BC5D700DDF4DD /* Indicator_ProgressDots.swift in Sources */,
 				D18E68C230476933000EC973 /* AccentButtonStyle.swift in Sources */,
 				D10EE20930549A9400A6C6D9 /* SelectGameTypeView.swift in Sources */,
 				D16A224730691FD9003CF6D4 /* AddPlayersNamesSreen.swift in Sources */,
@@ -281,6 +298,7 @@
 				D1D6D8863056BAAF00ADB4A6 /* HeaderComponent.swift in Sources */,
 				D17F5D043051EEA20096EE02 /* PrimaryButtonStyle.swift in Sources */,
 				D19EE9FA305D8641005EB652 /* BaseScreenTеmplate.swift in Sources */,
+				D16746B0307BC62B00DDF4DD /* ContentCard_PlayerBar.swift in Sources */,
 				D1D6D89F305897A200ADB4A6 /* Chips_TeamNames.swift in Sources */,
 				D1AB5BA43045F9CD00E56C01 /* ListchetaApp.swift in Sources */,
 				D17F5D063051F48F0096EE02 /* GhostButtonStyle.swift in Sources */,

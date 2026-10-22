@@ -38,6 +38,7 @@ struct BaseScreenTеmplate<Content: View>: View {
                                 titleText: titleText)
                 content
             }
+            .scrollEdgeEffectStyle(.soft, for: .vertical)
             Spacer()
             Button(action: onButtonTap) {
                 Text(buttonTitle)

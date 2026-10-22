@@ -59,4 +59,8 @@ enum ApplicationColors {
     // Team card edit pill
     static let teamCardEditBorderColor = Color(.white).opacity(0.5)
     static let teamCardEditTextColor = Color(.white).opacity(0.85)
+    
+    static let progressDotOnColor  = sunColor
+    static let progressDotOffColor = inkColor.opacity(0.15)
+    static let avatarTextColor     = Color(.white)
 }

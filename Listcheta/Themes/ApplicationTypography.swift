@@ -42,4 +42,11 @@ enum ApplicationTypography {
     static let UIFont_TeamCardTitle = Font.custom(FontName.UnboundedBold, size: 17)
     static let UIFont_ChipLabel = Font.custom(FontName.ManropeBold, size: 13)
     static let UIFont_EditPill = Font.custom(FontName.ManropeBold, size: 13)
+
+    static let UIFont_WordRowNumber = Font.custom(FontName.UnboundedBold, size: 13)
+    static let UIFont_WordRowInput  = Font.custom(FontName.CaveatBold, size: 24)
+    
+    static let UIFont_PlayerBarAvatar = Font.custom(FontName.ManropeExtraBold, size: 16)
+    static let UIFont_PlayerBarName   = Font.custom(FontName.ManropeExtraBold, size: 16)
+    static let UIFont_PlayerBarSub    = Font.custom(FontName.ManropeSemiBold, size: 12)
 }
