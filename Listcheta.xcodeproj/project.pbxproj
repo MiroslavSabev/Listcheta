@@ -29,6 +29,7 @@
 		D1D6D8863056BAAF00ADB4A6 /* HeaderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D6D8853056BAAD00ADB4A6 /* HeaderComponent.swift */; };
 		D1D6D89C3058926600ADB4A6 /* ContentCard_TeamPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D6D89B3058925400ADB4A6 /* ContentCard_TeamPreview.swift */; };
 		D1D6D89F305897A200ADB4A6 /* Chips_TeamNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D6D89E3058978F00ADB4A6 /* Chips_TeamNames.swift */; };
+		D1BCC55E3078255100E47DA6 /* InputCard_WordRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BCC55D3078254F00E47DA6 /* InputCard_WordRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		D1D6D8853056BAAD00ADB4A6 /* HeaderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderComponent.swift; sourceTree = "<group>"; };
 		D1D6D89B3058925400ADB4A6 /* ContentCard_TeamPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCard_TeamPreview.swift; sourceTree = "<group>"; };
 		D1D6D89E3058978F00ADB4A6 /* Chips_TeamNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chips_TeamNames.swift; sourceTree = "<group>"; };
+		D1BCC55D3078254F00E47DA6 /* InputCard_WordRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCard_WordRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
