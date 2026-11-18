@@ -12,7 +12,7 @@ struct ListchetaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            StartupView()
+            StartupScreen()
         }
     }
 }

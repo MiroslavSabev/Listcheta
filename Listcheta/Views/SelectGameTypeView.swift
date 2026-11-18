@@ -1,5 +1,5 @@
 //
-//  SelectGameTypeView.swift
+//  SelectGameTypeScreen.swift
 //  Listcheta
 //
 //  Created by Miroslav Sabev on 11.09.26.
@@ -12,7 +12,7 @@ enum GameMode: String, CaseIterable {
          MultiplePhones
 }
 
-struct SelectGameTypeView: View {
+struct SelectGameTypeScreen: View {
     
     @State private var selectedGameMode: GameMode = .SinglePhone
     @State private var isPrimaryButtonTapped: Bool = false
@@ -59,5 +59,5 @@ struct SelectGameTypeView: View {
 }
 
 #Preview {
-    SelectGameTypeView()
+    SelectGameTypeScreen()
 }

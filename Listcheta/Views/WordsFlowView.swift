@@ -20,8 +20,21 @@ struct WordsFlowView: View {
 
     @State private var currentIndex = 0
     @State private var allWords: [UUID: [String]] = [:]
+    @State private var isFinished = false
 
     var body: some View {
+        Group {
+            content
+        }
+        .navigationDestination(isPresented: $isFinished) {
+            RoundStartupScreen(onStart: {
+                onFinish(allWords)
+            })
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
         if players.indices.contains(currentIndex) {
             let player = players[currentIndex]
 
@@ -36,6 +49,7 @@ struct WordsFlowView: View {
                         currentIndex += 1
                     } else {
                         onFinish(allWords)
+                        isFinished = true
                     }
                 }
             )

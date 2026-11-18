@@ -23,19 +23,26 @@ struct EnterTeamsNamesView: View {
                                                onButtonTap: {
             isPrimaryButtonTapped = true
         }) {
-            InputCard_TeamName(config: .init(title: "Отбор 1",
-                                             surfaceColor: ApplicationColors.firstTeamSurfaceColor,
-                                             suggestions: ["Шматките", "Тарикатите"]),
-                               teamName: $firstTeamName,
-            isFocused: $isFirstFieldFocused)
-            .padding()
-            
-            InputCard_TeamName(config: .init(title: "Отбор 2",
-                                             surfaceColor: ApplicationColors.secondTeamSurfaceColor,
-                                             suggestions: ["Миризливките", "Лудите"]),
-                               teamName: $secondTeamName,
-            isFocused: $isSecondFieldFocused)
-            .padding()
+            VStack(spacing: 0) {
+                InputCard_TeamName(config: .init(title: "Отбор 1",
+                                                 surfaceColor: ApplicationColors.firstTeamSurfaceColor,
+                                                 suggestions: ["Шматките", "Тарикатите"]),
+                                   teamName: $firstTeamName,
+                                   isFocused: $isFirstFieldFocused)
+                .padding(.horizontal)
+                .padding(.top)
+
+                Mascot_VersusDuo(config: .init(firstTapeColor: ApplicationColors.firstTeamSurfaceColor,
+                                               secondTapeColor: ApplicationColors.secondTeamSurfaceColor))
+
+                InputCard_TeamName(config: .init(title: "Отбор 2",
+                                                 surfaceColor: ApplicationColors.secondTeamSurfaceColor,
+                                                 suggestions: ["Миризливките", "Лудите"]),
+                                   teamName: $secondTeamName,
+                                   isFocused: $isSecondFieldFocused)
+                .padding(.horizontal)
+                .padding(.bottom)
+            }
         }
         .navigationDestination(isPresented: $isPrimaryButtonTapped) {
             AddPlayersNamesSreen()

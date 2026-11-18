@@ -1,5 +1,5 @@
 //
-//  StartupView.swift
+//  StartupScreen.swift
 //  Listcheta
 //
 //  Created by Miroslav Sabev on 31.08.26.
@@ -7,40 +7,34 @@
 
 import SwiftUI
 
-struct StartupView: View {
+struct StartupScreen: View {
     
     @State private var isNewGameButtonPressed: Bool = false
     @State private var isNewGameWithCodeButtonPressed: Bool = false
+    @State private var isGameRulesButtonPressed: Bool = false
 
     var body: some View {
         
         NavigationStack {
             VStack {
-                headerImage
+                Illustration_Bowl()
                 titles
                 buttons
             }
             .padding(.top, 50)
             .frame(maxWidth: .infinity,
                    maxHeight: .infinity,
-                   alignment: .top
+                   alignment: .center
             )
             .background(ApplicationColors.backgroundColor)
             .navigationDestination(isPresented: $isNewGameButtonPressed) {
-                SelectGameTypeView()
+                SelectGameTypeScreen()
             }
             .navigationDestination(isPresented: $isNewGameWithCodeButtonPressed) {
             }
+            .navigationDestination(isPresented: $isGameRulesButtonPressed) {
+            }
         }
-    }
-    
-    private var headerImage: some View {
-        
-        Image("image_startup")
-            .resizable()
-            .aspectRatio(1 / 0.70, contentMode: .fit)
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 32)
     }
     
     private var titles: some View {
@@ -80,7 +74,7 @@ struct StartupView: View {
             .buttonStyle(PrimaryButtonStyle())
             
             Button {
-                isNewGameWithCodeButtonPressed = true
+                isGameRulesButtonPressed = true
             } label: {
                 Text("Как се играе")
 
@@ -92,5 +86,5 @@ struct StartupView: View {
 }
 
 #Preview {
-    StartupView()
+    StartupScreen()
 }

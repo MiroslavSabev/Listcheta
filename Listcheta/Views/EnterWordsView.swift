@@ -58,18 +58,32 @@ struct EnterWordsView: View {
             .padding(.horizontal, 24)
             .frame(maxWidth: .infinity, alignment: .topLeading)
         }
+        .contentShape(Rectangle())
+        .onTapGesture { focusedIndex = nil }
         .task {
             focusedIndex = 0
         }
     }
 
     private var wordRows: some View {
-        VStack(spacing: 8) {
-            ForEach(0..<visibleRows, id: \.self) { index in
-                InputCard_WordRow(
-                    config: .init(number: index + 1, placeholder: "напиши дума…"), text: $words[index], onSubmit: { advance(from: index) })
-                
-                .focused($focusedIndex, equals: index)
+        ScrollViewReader { proxy in
+            VStack(spacing: 8) {
+                ForEach(0..<visibleRows, id: \.self) { index in
+                    InputCard_WordRow(
+                        config: .init(number: index + 1, placeholder: "напиши дума…"),
+                        text: $words[index],
+                        focus: $focusedIndex,
+                        onSubmit: { advance(from: index) }
+                    )
+                    .id(index)
+                }
+            }
+            .padding(.bottom, 24)
+            .onChange(of: focusedIndex) { _, new in
+                guard let new else { return }
+                withAnimation(.easeOut(duration: 0.2)) {
+                    proxy.scrollTo(new, anchor: UnitPoint(x: 0.5, y: 0.3))
+                }
             }
         }
     }
@@ -77,7 +91,6 @@ struct EnterWordsView: View {
     // MARK: Actions
 
     private func advance(from index: Int) {
-        // празен submit не мести фокуса — следващият ред още не съществува
         guard isFilled(words[index]) else { return }
         focusedIndex = index + 1 < wordsCount ? index + 1 : nil
     }

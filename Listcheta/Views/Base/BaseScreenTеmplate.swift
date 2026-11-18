@@ -7,12 +7,22 @@
 
 import SwiftUI
 
+// Заявка за превъртане: към кое id и след колко изчакване.
+// token прави всяка заявка различна, така че няколко поредни към едно и също id работят.
+struct ScrollRequest: Equatable {
+    let id: String
+    var delay: Double = 0.35
+    let token = UUID()
+}
+
 struct BaseScreenTеmplate<Content: View>: View {
     let titleText: String
     let eyebrowText: String?
     let buttonTitle: String
     let onButtonTap: () -> Void
     let isButtonEnabled: Bool
+    let isButtonHidden: Bool
+    @Binding var scrollRequest: ScrollRequest?
     @ViewBuilder let content: Content
 
     init(
@@ -20,6 +30,8 @@ struct BaseScreenTеmplate<Content: View>: View {
         eyebrowText: String? = nil,
         buttonTitle: String = "Продължи",
         isButtonEnabled: Bool = true,
+        isButtonHidden: Bool = false,
+        scrollRequest: Binding<ScrollRequest?> = .constant(nil),
         onButtonTap: @escaping () -> Void,
         @ViewBuilder content: () -> Content
     ) {
@@ -27,25 +39,40 @@ struct BaseScreenTеmplate<Content: View>: View {
         self.eyebrowText = eyebrowText
         self.buttonTitle = buttonTitle
         self.isButtonEnabled = isButtonEnabled
+        self.isButtonHidden = isButtonHidden
+        self._scrollRequest = scrollRequest
         self.onButtonTap = onButtonTap
         self.content = content()
     }
 
     var body: some View {
         VStack {
-            ScrollView {
-                HeaderComponent(eyebrowText: eyebrowText ?? "",
-                                titleText: titleText)
-                content
+            ScrollViewReader { proxy in
+                ScrollView {
+                    HeaderComponent(eyebrowText: eyebrowText ?? "",
+                                    titleText: titleText)
+                    content
+                }
+                .scrollEdgeEffectStyle(.soft, for: .vertical)
+                .onChange(of: scrollRequest) { _, request in
+                    guard let request else { return }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + request.delay) {
+                        withAnimation(.easeOut(duration: 0.25)) {
+                            proxy.scrollTo(request.id, anchor: .center)
+                        }
+                        scrollRequest = nil
+                    }
+                }
             }
-            .scrollEdgeEffectStyle(.soft, for: .vertical)
             Spacer()
-            Button(action: onButtonTap) {
-                Text(buttonTitle)
+            if !isButtonHidden {
+                Button(action: onButtonTap) {
+                    Text(buttonTitle)
+                }
+                .buttonStyle(PrimaryButtonStyle())
+                .disabled(!isButtonEnabled)
+                .padding()
             }
-            .buttonStyle(PrimaryButtonStyle())
-            .disabled(!isButtonEnabled)
-            .padding()
         }
         .background(ApplicationColors.backgroundColor)
     }

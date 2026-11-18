@@ -38,5 +38,5 @@ struct GhostButtonStyle: ButtonStyle {
 
 
 #Preview {
-    StartupView()
+    StartupScreen()
 }

@@ -15,9 +15,12 @@ struct WordRowConfig {
 struct InputCard_WordRow: View {
     let config: WordRowConfig
     @Binding var text: String
+    var focus: FocusState<Int?>.Binding      // ново
     var onSubmit: () -> Void = {}
 
-    @FocusState private var isFocused: Bool
+    private var index: Int { config.number - 1 }   // ново
+
+    // ❌ изтрий: @FocusState private var isFocused: Bool
 
     private var isEmpty: Bool {
         text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -32,13 +35,20 @@ struct InputCard_WordRow: View {
             TextField("",
                       text: $text,
                       prompt: Text(config.placeholder)
-                        .foregroundColor(ApplicationColors.textPrimaryColor.opacity(0.28)))
+                        .foregroundColor(ApplicationColors.textPrimaryColor.opacity(0.28)),
+                      axis: .vertical)
+                .lineLimit(1...3)   // при lineLimit(1) Return може пак да изпраща полето
                 .font(ApplicationTypography.UIFont_WordRowInput)
                 .foregroundStyle(ApplicationColors.textPrimaryColor)
-                .focused($isFocused)
+                .focused(focus, equals: index)
                 .submitLabel(.next)
                 .autocorrectionDisabled()
-                .onSubmit(onSubmit)
+                .onChange(of: text) { _, newValue in
+                    if newValue.contains("\n") {
+                        text = newValue.replacingOccurrences(of: "\n", with: "")
+                        onSubmit()
+                    }
+                }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 11)
@@ -51,19 +61,22 @@ struct InputCard_WordRow: View {
         .shadow(color: ApplicationColors.textPrimaryColor.opacity(0.08),
                 radius: 4, x: 0, y: 3)
         .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-        .onTapGesture { isFocused = true }
+        .onTapGesture { focus.wrappedValue = index }    // ← вместо isFocused = true
     }
 }
 
 #Preview {
     struct PreviewWrapper: View {
         @State private var words = ["хладилник", "пеперуда", "космонавт", "баница", ""]
+        @FocusState private var focus: Int?
         var body: some View {
             ZStack {
                 ApplicationColors.backgroundColor.ignoresSafeArea()
                 VStack(spacing: 8) {
                     ForEach(words.indices, id: \.self) { i in
-                        InputCard_WordRow(config: .init(number: i + 1), text: $words[i])
+                        InputCard_WordRow(config: .init(number: i + 1),
+                                          text: $words[i],
+                                          focus: $focus)
                     }
                 }
                 .padding(.horizontal, 24)

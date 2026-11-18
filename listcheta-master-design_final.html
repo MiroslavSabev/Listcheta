@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Листчета — Мастър дизайн (всички режими)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#26224A;--paper:#FFFDF6;--bg:#EDEBFA;
+  --teamA:#FF5C8A;--teamB:#00B8A9;--sun:#FFD93D;--muted:#8B87A8;
+  --host:#7B61FF;--hostDark:#5D43E8;
+  --display:'Unbounded',sans-serif;--body:'Manrope',system-ui,sans-serif;--hand:'Caveat',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#211D3E;font-family:var(--body);color:var(--ink);padding:56px 24px 100px}
+
+/* ===== header ===== */
+.gallery-head{max-width:900px;margin:0 auto 40px;color:#fff;text-align:center}
+.gallery-head .kicker{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.22em;color:var(--sun);text-transform:uppercase}
+.gallery-head h1{font-family:var(--display);font-weight:900;font-size:clamp(26px,4vw,42px);margin-top:10px}
+.gallery-head h1 span{color:var(--sun)}
+.gallery-head p{color:#B7B3D6;margin-top:14px;font-size:15px;line-height:1.65;max-width:640px;margin-left:auto;margin-right:auto}
+
+/* ===== legend ===== */
+.legend{max-width:900px;margin:0 auto 64px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tag{font-family:var(--display);font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:8px 14px;border-radius:20px;color:#fff;display:inline-flex;align-items:center;gap:7px}
+.tag i{width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block}
+.tag.common{background:rgba(255,255,255,.12);color:#fff}
+.tag.a{background:var(--sun);color:var(--ink)}
+.tag.a i{background:var(--ink)}
+.tag.b{background:var(--teamB)}
+.tag.shared{background:var(--host)}
+
+/* ===== route map ===== */
+.routemap{max-width:1040px;margin:0 auto 90px;background:var(--bg);border-radius:32px;padding:40px 36px}
+.routemap h2{font-family:var(--display);font-weight:900;font-size:18px;margin-bottom:22px}
+.rm-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.rm-node{background:#fff;border-radius:14px;padding:12px 16px;font-weight:800;font-size:13px;box-shadow:0 4px 10px rgba(38,34,74,.08);display:flex;align-items:center;gap:8px}
+.rm-node small{display:block;font-weight:600;color:var(--muted);font-size:11px;margin-top:2px}
+.rm-arrow{color:var(--muted);font-size:18px;font-weight:700}
+.rm-branch{margin-left:26px;padding-left:22px;border-left:3px dashed rgba(38,34,74,.18);display:flex;flex-direction:column;gap:12px;margin-top:6px;margin-bottom:20px}
+.rm-node.root{background:var(--ink);color:#fff}
+.rm-node.root small{color:#B7B3D6}
+.rm-node.pill-a{border:2px solid var(--sun)}
+.rm-node.pill-b{border:2px solid var(--teamB)}
+
+/* ===== phase sections ===== */
+.phase{max-width:1520px;margin:0 auto 26px}
+.phase-head{max-width:900px;margin:0 auto 30px;text-align:center}
+.phase-head .no{font-family:var(--display);font-size:12px;font-weight:700;color:var(--sun);letter-spacing:.1em}
+.phase-head h3{font-family:var(--display);font-weight:900;font-size:22px;color:#fff;margin-top:8px}
+.phase-head p{color:#8f8bb4;font-size:13.5px;margin-top:8px;line-height:1.6;max-width:560px;margin-left:auto;margin-right:auto}
+.flow{display:flex;flex-wrap:wrap;gap:56px 40px;justify-content:center;max-width:1500px;margin:0 auto 90px}
+.step{display:flex;flex-direction:column;align-items:center;gap:14px}
+.step-label{color:#fff;font-weight:700;font-size:14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.step-label b{color:var(--sun);font-family:var(--display);font-weight:700;font-size:11px}
+.step-note{color:#8f8bb4;font-size:12.5px;max-width:300px;text-align:center;line-height:1.55}
+.role{font-family:var(--display);font-size:9px;font-weight:700;letter-spacing:.12em;padding:5px 12px;border-radius:20px;color:#fff}
+
+/* ===== phone frame ===== */
+.phone{width:340px;height:716px;background:#0c0a1c;border-radius:52px;padding:10px;box-shadow:0 30px 60px rgba(0,0,0,.5),inset 0 0 0 2px #3a3560;position:relative;flex-shrink:0}
+.screen{width:100%;height:100%;border-radius:43px;overflow:hidden;background:var(--bg);position:relative;display:flex;flex-direction:column}
+.island{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:96px;height:26px;background:#0c0a1c;border-radius:20px;z-index:50}
+.statusbar{height:54px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 4px;font-size:12px;font-weight:700}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:110px;height:4px;border-radius:4px;background:rgba(38,34,74,.35);z-index:50}
+.dark .homebar{background:rgba(255,255,255,.4)}
+.dark .statusbar{color:#fff}
+.content{flex:1;display:flex;flex-direction:column;padding:8px 22px 34px;position:relative}
+
+/* ===== shared components ===== */
+.btn{font-family:var(--body);font-weight:800;font-size:16px;border:none;border-radius:18px;padding:17px;width:100%;cursor:pointer}
+.btn-primary{background:var(--ink);color:#fff;box-shadow:0 6px 0 #14112e}
+.btn-sun{background:var(--sun);color:var(--ink);box-shadow:0 6px 0 #d9b41f}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid rgba(38,34,74,.25);box-shadow:none;font-weight:700}
+.btn-dis{background:rgba(38,34,74,.12);color:rgba(38,34,74,.4);box-shadow:none}
+.eyebrow{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+h2.scr{font-family:var(--display);font-weight:900;font-size:25px;line-height:1.18;margin-top:8px}
+
+.slip{background:var(--paper);border-radius:6px;box-shadow:0 8px 22px rgba(38,34,74,.16);position:relative}
+.slip::before{content:'';position:absolute;top:-9px;left:50%;transform:translateX(-50%) rotate(-2deg);width:64px;height:20px;background:rgba(255,217,61,.75);border-radius:2px}
+.slip-word{font-family:var(--hand);font-weight:700;text-align:center}
+
+/* start */
+.s1 .content{align-items:center;justify-content:center}
+.bowl{position:relative;width:180px;height:136px;margin-bottom:18px}
+.bowl .b{position:absolute;bottom:0;left:0;width:180px;height:82px;background:var(--ink);border-radius:0 0 90px 90px;box-shadow:inset 0 -12px 0 rgba(0,0,0,.22)}
+.mini{position:absolute;width:52px;height:32px;background:var(--paper);border-radius:4px;box-shadow:0 4px 10px rgba(38,34,74,.25);display:flex;align-items:center;justify-content:center;font-family:var(--hand);font-size:16px;font-weight:700}
+.logo{font-family:var(--display);font-weight:900;font-size:34px}
+.tag2{color:var(--muted);font-weight:600;font-size:14px;margin:8px 0 36px;text-align:center;line-height:1.5}
+.s1 .btn+.btn{margin-top:12px}
+
+/* mode select */
+.modecard{background:#fff;border-radius:22px;padding:20px;margin-top:16px;box-shadow:0 4px 12px rgba(38,34,74,.08);display:flex;gap:14px;align-items:flex-start;border:2px solid transparent;cursor:pointer}
+.modecard.sel{border-color:var(--sun);background:rgba(255,217,61,.12)}
+.modecard .ic{width:46px;height:46px;border-radius:14px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.modecard h4{font-family:var(--display);font-weight:700;font-size:15px}
+.modecard p{font-size:12.5px;color:#5d5980;font-weight:600;margin-top:5px;line-height:1.5}
+
+/* team cards (local, no code) */
+.teamcard{border-radius:22px;padding:18px;color:#fff;margin-top:14px}
+.teamcard .tn{font-family:var(--display);font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px}
+.teamcard .edit{margin-left:auto;font-size:11px;opacity:.85;font-weight:700;border:1.5px solid rgba(255,255,255,.5);border-radius:20px;padding:3px 10px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.chip{background:rgba(255,255,255,.22);border-radius:20px;padding:6px 12px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.chip.add{background:rgba(255,255,255,.95);color:var(--ink)}
+.chip.you{background:#fff;color:var(--ink)}
+.chip.grouped{background:rgba(255,255,255,.95);color:var(--ink)}
+.chip .ph{font-size:11px}
+.hintline{font-size:12.5px;color:var(--muted);font-weight:600;text-align:center;margin-top:16px;line-height:1.5}
+
+/* teamcol (room-based, with device badges) */
+.teamcol{border-radius:20px;padding:14px;color:#fff;margin-top:12px}
+.teamcol .tn{font-family:var(--display);font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.teamcol .cnt{font-size:11px;opacity:.85;font-weight:700}
+
+/* words */
+.playerbar{display:flex;align-items:center;gap:12px;margin-top:14px}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--teamA);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0}
+.playerbar .nm{font-weight:800;font-size:16px}
+.playerbar .sub{font-size:12px;color:var(--muted);font-weight:600}
+.dots{display:flex;gap:5px;margin:16px 0 6px}
+.dot{width:22px;height:5px;border-radius:4px;background:rgba(38,34,74,.15)}
+.dot.on{background:var(--sun)}
+.wordlist{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.wrow{background:var(--paper);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 3px 8px rgba(38,34,74,.08)}
+.wrow .n{font-family:var(--display);font-size:10px;font-weight:700;color:var(--muted);width:18px}
+.wrow .w{font-family:var(--hand);font-size:20px;font-weight:700}
+.wrow.empty .w{color:rgba(38,34,74,.28)}
+.progressbar{background:var(--paper);border-radius:14px;padding:12px 14px;margin-top:10px;box-shadow:0 3px 8px rgba(38,34,74,.08)}
+.progressbar .t{font-size:12px;font-weight:800;display:flex;justify-content:space-between}
+.progressbar .bar{height:8px;background:rgba(38,34,74,.1);border-radius:6px;margin-top:8px;overflow:hidden}
+.progressbar .bar i{display:block;height:100%;width:66%;background:var(--teamB);border-radius:6px}
+.userbar{display:flex;align-items:center;gap:10px;margin-top:12px}
+.userbar .av{width:40px;height:40px;border-radius:50%;background:var(--teamA);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.userbar .nm{font-weight:800;font-size:15px}
+.userbar .sub{font-size:11.5px;color:var(--muted);font-weight:700}
+.userbar .next{margin-left:auto;font-size:11px;font-weight:800;background:rgba(38,34,74,.1);border-radius:20px;padding:6px 11px;color:var(--ink)}
+
+/* round intro */
+.s4 .screen{background:var(--ink)}
+.s4 .content{align-items:center;justify-content:center;text-align:center;color:#fff}
+.roundnum{font-family:var(--display);font-weight:900;font-size:15px;color:var(--sun);letter-spacing:.28em}
+.roundname{font-family:var(--display);font-weight:900;font-size:32px;margin:14px 0 18px;line-height:1.1}
+.rounddesc{color:#B7B3D6;font-size:15px;line-height:1.6;max-width:250px;font-weight:600}
+.rpills{display:flex;gap:8px;margin:34px 0 40px}
+.rpill{font-family:var(--display);font-size:10px;font-weight:700;padding:8px 14px;border-radius:20px;border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.5)}
+.rpill.on{background:var(--sun);color:var(--ink);border-color:var(--sun)}
+
+/* handoff screens (team-colored + host-colored) */
+.s5 .content{align-items:center;justify-content:center;text-align:center;color:#fff}
+.bigavatar{width:100px;height:100px;border-radius:50%;background:#fff;font-family:var(--display);font-weight:900;font-size:34px;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 36px rgba(0,0,0,.25);margin-bottom:20px}
+.s5 .who{font-family:var(--display);font-weight:900;font-size:28px}
+.s5 .team{font-weight:700;font-size:13px;opacity:.9;margin-top:8px;letter-spacing:.06em}
+.s5 .sub{font-weight:700;font-size:14px;opacity:.9;margin-top:8px;line-height:1.5}
+.carrynote{margin-top:24px;background:rgba(255,255,255,.18);border-radius:14px;padding:12px 16px;font-size:13px;font-weight:700;line-height:1.5;max-width:250px}
+.privnote{margin-top:24px;background:rgba(255,255,255,.18);border-radius:14px;padding:12px 16px;font-size:13px;font-weight:700;line-height:1.5;max-width:250px}
+
+/* room / code */
+.codecard{background:var(--ink);border-radius:24px;padding:24px;text-align:center;color:#fff;margin-top:14px}
+.codecard .lbl{font-size:11px;font-weight:700;letter-spacing:.18em;color:#B7B3D6}
+.codecard .code{font-family:var(--display);font-weight:900;font-size:36px;letter-spacing:.08em;margin:10px 0 4px;color:var(--sun)}
+.codecard .share{display:inline-flex;gap:8px;margin-top:14px}
+.codecard .share span{border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700}
+.qr{width:76px;height:76px;background:#fff;border-radius:12px;margin:14px auto 0;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:2px;padding:7px}
+.qr i{background:var(--ink);border-radius:1px}
+.qr i.o{background:transparent}
+.joinlist{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.joinrow{background:var(--paper);border-radius:14px;padding:10px 13px;display:flex;align-items:center;gap:10px;box-shadow:0 3px 8px rgba(38,34,74,.08);font-weight:800;font-size:13.5px}
+.joinrow .av{width:30px;height:30px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.joinrow .st{margin-left:auto;font-size:11px;font-weight:700;color:var(--muted)}
+.joinrow.pending{opacity:.55}
+.joinrow.pending .st{color:#c9a300}
+.codeboxes{display:flex;gap:7px;justify-content:center;margin:22px 0 10px}
+.cbox{width:42px;height:54px;background:var(--paper);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:22px;box-shadow:0 3px 8px rgba(38,34,74,.1)}
+.cbox.active{outline:3px solid var(--sun)}
+.cbox.empty{color:rgba(38,34,74,.2)}
+.namefield{background:var(--paper);border-radius:14px;padding:15px 16px;margin-top:18px;font-weight:700;font-size:15px;box-shadow:0 3px 8px rgba(38,34,74,.08);display:flex;justify-content:space-between;color:var(--ink)}
+.namefield span{color:var(--muted);font-weight:600}
+.textfield{background:var(--paper);border:2px solid rgba(38,34,74,.15);border-radius:13px;padding:13px 15px;font-family:var(--body);font-weight:700;font-size:15.5px;color:var(--ink);display:flex;align-items:center;width:100%}
+.textfield .ph{color:rgba(38,34,74,.4);font-weight:600}
+.cursor{display:inline-block;width:2px;height:18px;background:var(--ink);margin-left:3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.teamblock{border-radius:20px;padding:16px;color:#fff}
+.teamblock .tn{font-family:var(--display);font-weight:700;font-size:14px;display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.vsdivider{text-align:center;font-family:var(--display);font-weight:900;font-size:11px;color:var(--muted);letter-spacing:.1em;margin:10px 0}
+
+.twocol{display:flex;gap:9px;margin-top:14px}
+.twocol.capped{max-height:400px}
+.col{flex:1;border-radius:16px;padding:12px 10px;display:flex;flex-direction:column;gap:7px}
+.col.capped-col{overflow:hidden;position:relative}
+.colhead{font-family:var(--display);font-weight:700;font-size:11.5px;text-align:center;margin-bottom:2px}
+.col-scroll{overflow-y:auto;display:flex;flex-direction:column;gap:7px;flex:1;padding-right:2px}
+.col-scroll::-webkit-scrollbar{width:4px}
+.col-scroll::-webkit-scrollbar-thumb{background:rgba(38,34,74,.25);border-radius:4px}
+.fade{position:absolute;left:0;right:0;bottom:0;height:26px;pointer-events:none;border-radius:0 0 16px 16px}
+.fade.a{background:linear-gradient(rgba(255,92,138,0),rgba(255,92,138,.55))}
+.fade.b{background:linear-gradient(rgba(0,184,169,0),rgba(0,184,169,.55))}
+.minirow{background:#fff;border-radius:10px;padding:9px 9px;display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;box-shadow:0 2px 6px rgba(38,34,74,.07);color:var(--ink);flex-shrink:0}
+.minirow .av{width:22px;height:22px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9.5px;flex-shrink:0}
+.minirow .x{margin-left:auto;color:var(--muted);font-weight:700;font-size:14px}
+.minirow.add{justify-content:center;border:2px dashed rgba(38,34,74,.2);background:transparent;color:var(--muted);font-weight:700;font-size:12px}
+
+/* device roll-call */
+.devrow{background:var(--paper);border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 3px 8px rgba(38,34,74,.08);font-weight:800;font-size:15px;margin-top:10px}
+.devrow .av{width:36px;height:36px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+.devrow .x{margin-left:auto;color:var(--muted);font-weight:700;font-size:18px}
+.devrow.add{border:2px dashed rgba(38,34,74,.25);background:transparent;box-shadow:none;color:var(--muted);justify-content:center;font-weight:700;font-size:14px}
+.hintcard{background:rgba(255,217,61,.28);border:1.5px solid rgba(217,180,31,.5);border-radius:14px;padding:12px 14px;font-size:12.5px;font-weight:700;line-height:1.55;margin-top:16px}
+.devbadge{position:absolute;top:60px;right:18px;background:rgba(255,255,255,.14);border-radius:20px;padding:6px 12px;font-size:10.5px;font-weight:800;color:#fff;z-index:40;display:flex;gap:5px;align-items:center}
+.light .devbadge{background:rgba(38,34,74,.1);color:var(--ink)}
+
+/* handoff dark / host gradient */
+.handoff .screen{background:linear-gradient(170deg,#7b61ff 0%,#5d43e8 100%)}
+.handoff .content{align-items:center;justify-content:center;text-align:center;color:#fff}
+
+/* turn / game */
+.sturn .screen{background:var(--ink)}
+.sturn .content{color:#fff;align-items:center}
+.timer{position:relative;width:120px;height:120px;margin-top:4px}
+.timer svg{transform:rotate(-90deg)}
+.timer .tt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:26px;font-weight:900}
+.gameslip{width:100%;padding:36px 20px;margin-top:20px;transform:rotate(-1.5deg)}
+.gameslip .slip-word{font-size:40px;color:var(--ink)}
+.meta{display:flex;justify-content:space-between;width:100%;margin-top:18px;font-size:11.5px;font-weight:700;color:#B7B3D6}
+.meta b{color:#fff;font-family:var(--display);font-size:14px;display:block;margin-top:3px}
+.actions{margin-top:auto;width:100%;display:flex;flex-direction:column;gap:10px}
+.btn-got{background:#3DDC97;color:#0d3b28;box-shadow:0 6px 0 #23a06a;font-size:18px;padding:18px}
+.btn-skip{background:transparent;color:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.22);box-shadow:none;padding:12px;font-size:14px}
+.guesspulse{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(255,217,61,.35),transparent 70%);display:flex;align-items:center;justify-content:center;margin-top:10px}
+.guesspulse .in{width:96px;height:96px;border-radius:50%;background:var(--sun);display:flex;align-items:center;justify-content:center;font-size:38px}
+.livefeed{width:100%;margin-top:20px;display:flex;flex-direction:column;gap:8px}
+.feedrow{background:rgba(255,255,255,.1);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:700;color:#fff;display:flex;gap:8px;align-items:center}
+.feedrow .fw{font-family:var(--hand);font-size:18px;color:var(--sun)}
+.lockcard{background:rgba(255,255,255,.1);border-radius:16px;padding:14px 16px;margin-top:20px;display:flex;gap:12px;align-items:flex-start;max-width:100%}
+.lockcard .ic{font-size:20px;flex-shrink:0}
+.lockcard p{font-size:12.5px;font-weight:700;line-height:1.55;color:#D5D2EE}
+.lockcard p b{color:var(--sun)}
+.reportbtn{background:transparent;border:2px dashed rgba(255,255,255,.35);color:rgba(255,255,255,.75);border-radius:16px;padding:13px;font-size:13px;font-weight:800;width:100%}
+.watch .gameslip{opacity:.95}
+
+/* round end */
+.scorecard{border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:12px;color:#fff;margin-top:12px}
+.scorecard .pts{margin-left:auto;font-family:var(--display);font-weight:900;font-size:28px}
+.scorecard .tn2{font-family:var(--display);font-weight:700;font-size:14px}
+.scorecard .sub2{font-size:11.5px;opacity:.85;font-weight:600;margin-top:3px}
+.carrycard{background:var(--paper);border-radius:16px;padding:13px 15px;margin-top:16px;display:flex;gap:12px;align-items:center;box-shadow:0 4px 12px rgba(38,34,74,.1)}
+.carrycard .ic{width:36px;height:36px;border-radius:11px;background:var(--sun);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.carrycard p{font-size:12.5px;font-weight:700;line-height:1.5}
+.waitnote{margin-top:auto;text-align:center;font-size:13px;font-weight:700;color:var(--muted)}
+.waitnote .spin{display:inline-block;width:14px;height:14px;border:2.5px solid rgba(38,34,74,.2);border-top-color:var(--ink);border-radius:50%;margin-right:6px;vertical-align:-2px}
+
+/* finale */
+.s8 .screen{background:linear-gradient(170deg,#2a2452 0%,#171331 100%)}
+.s8 .content{align-items:center;justify-content:center;text-align:center;color:#fff}
+.confetti i{position:absolute;width:8px;height:14px;border-radius:2px;opacity:.9}
+.trophyslip{width:190px;padding:26px 14px 22px;transform:rotate(2deg);margin-bottom:26px}
+.trophyslip .cup{font-size:44px}
+.trophyslip .slip-word{font-size:30px;color:var(--ink);margin-top:4px}
+.s8 .fin{font-family:var(--display);font-weight:900;font-size:24px;line-height:1.2}
+.s8 .score{font-family:var(--display);font-weight:900;font-size:44px;color:var(--sun);margin:14px 0 30px}
+.s8 .score span{color:rgba(255,255,255,.35);font-size:26px;margin:0 10px}
+
+/* rules */
+.rulecard{background:var(--paper);border-radius:18px;padding:16px;display:flex;gap:14px;margin-top:12px;box-shadow:0 4px 12px rgba(38,34,74,.08)}
+.rulecard .rn{font-family:var(--display);font-weight:900;font-size:13px;color:#fff;background:var(--ink);width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rulecard h4{font-size:14px;font-weight:800;margin-bottom:4px}
+.rulecard p{font-size:12.5px;color:#5d5980;font-weight:600;line-height:1.55}
+.rulecard.r1 .rn{background:var(--teamA)}
+.rulecard.r2 .rn{background:var(--teamB)}
+.rulecard.r3 .rn{background:var(--sun);color:var(--ink)}
+.rulecard.r4 .rn{background:var(--host)}
+
+@media (max-width:420px){.phone{width:300px;height:632px}.gameslip .slip-word{font-size:34px}}
+
+/* ===== A4 / 02б / 02в — купата е готова + предаване ===== */
+.s4 .content.rdy{justify-content:flex-start;padding-top:12px}
+.rdy .bowl{margin:16px 0 0}
+.rdy .bowl .b{background:#3a3470}
+.rdy .roundnum{font-size:13px;margin-top:22px}
+.rdy .roundname{font-size:25px;margin:10px 0 8px}
+.rdy .rounddesc{font-size:13px;line-height:1.55}
+.rdy .rpills{margin:14px 0 0;gap:7px}
+.rdy .rpill{font-size:9.5px;padding:7px 12px}
+.handto{width:100%;margin-top:auto;margin-bottom:18px;padding-top:16px;border-top:1.5px solid rgba(255,255,255,.14);text-align:center}
+.handto small{display:block;font-size:12px;font-weight:700;color:#B7B3D6}
+.handto b{display:block;font-family:var(--display);font-weight:900;font-size:22px;color:#fff;margin-top:6px}
+.handto b span{color:var(--sun)}
+</style>
+</head>
+<body>
+
+<div class="gallery-head">
+  <div class="kicker">Мастър дизайн · 1 файл, всички режими</div>
+  <h1>ЛИСТ<span>ЧЕТА</span> — обединен поток</h1>
+  <p>Едно приложение, три начина да играете, без объркване от началото: подавате един телефон, всеки на своя телефон в обща стая, или комбинация — няколко души на едно устройство в стая с други. Пътят се разклонява само там, където наистина трябва; всичко останало (рундове, игра, финал, правила) е един и същ екран за всички.</p>
+</div>
+
+<div class="legend">
+  <span class="tag common"><i></i>Общо за всички режими</span>
+  <span class="tag a"><i></i>Режим „Един телефон“</span>
+  <span class="tag b"><i></i>Режим „Стая с код“</span>
+  <span class="tag shared"><i></i>Вариант за споделено устройство в стая</span>
+</div>
+
+<!-- ================= ROUTE MAP ================= -->
+<div class="routemap">
+  <h2>🗺️ Картата на пътя — кой екран кога се вижда</h2>
+
+  <div class="rm-row">
+    <div class="rm-node root">Начало<small>eднa точка за всички</small></div>
+    <div class="rm-arrow">→</div>
+    <div class="rm-node root">Как ще играете?<small>избор на режим</small></div>
+  </div>
+
+  <div class="rm-branch">
+    <div class="rm-row">
+      <div class="rm-node pill-a">📱 Един телефон<small>подавате си го</small></div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-node">Имена на отборите<small>двете наведнъж</small></div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-node">Играчите на отборите<small>двете колони наведнъж</small></div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-node">Думи (предаване)</div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-node">Всичко е готово (А4)<small>купата + Рунд 1 + предаване</small></div>
+    </div>
+  </div>
+
+  <div class="rm-branch">
+    <div class="rm-row">
+      <div class="rm-node pill-b">🔗 Стая с код<small>всеки на своя телефон</small></div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-node">Домакин: код + QR <br><small>или</small> Гост: въведи код</div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-node">Кой играе от този телефон?<small>1 или повече играчи</small></div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-node">Отбори (с бадж 📱² при споделено у-во)</div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-node">Думи (паралелно<br>+ локално предаване при споделено)</div>
+    </div>
+  </div>
+
+  <div class="rm-row" style="margin-top:6px">
+    <div class="rm-node root">И двата пътя се сливат тук ↓</div>
+  </div>
+  <div class="rm-row">
+    <div class="rm-node">Начало на рунд</div>
+    <div class="rm-arrow">→</div>
+    <div class="rm-node">Ход (виж вариантите по роля →)</div>
+    <div class="rm-arrow">→</div>
+    <div class="rm-node">Край на рунда</div>
+    <div class="rm-arrow">→</div>
+    <div class="rm-node">Още рундове ⟲ или Финал 🏆</div>
+  </div>
+
+  <div class="rm-row" style="margin-top:18px">
+    <div class="rm-node root">По време на ход — 5 екрана според ролята ти в момента<small>обясняващ · съотборник · контрол от другия отбор · заключено (споделено у-во) · предай на следващия</small></div>
+  </div>
+</div>
+
+<!-- ================= PHASE 0: START ================= -->
+<div class="phase">
+  <div class="phase-head">
+    <div class="no">Фаза 0</div>
+    <h3>Начало</h3>
+    <p>Един-единствен начален екран. Никъде повече не пише „нова игра“ на едно място и „създай стая“ на друго — изборът идва на следващия екран, изрично.</p>
+  </div>
+  <div class="flow">
+
+  <div class="step">
+    <div class="step-label"><span class="tag common"><i></i>Общо</span><b>00</b>Начален екран</div>
+    <div class="phone"><div class="screen s1"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="bowl">
+          <div class="mini" style="top:6px;left:14px;transform:rotate(-9deg)">котка</div>
+          <div class="mini" style="top:-2px;right:8px;transform:rotate(7deg)">луна</div>
+          <div class="mini" style="top:36px;left:64px;transform:rotate(3deg);background:var(--sun)">море</div>
+          <div class="b"></div>
+        </div>
+        <div class="logo">Листчета</div>
+        <div class="tag2">Играта за компании.<br>Обяснявай, показвай, познавай.</div>
+        <button class="btn btn-sun">Нова игра</button>
+        <button class="btn btn-primary">Влез с код</button>
+        <button class="btn btn-ghost">Как се играе</button>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">„Нова игра“ винаги отваря избора на режим — никога директно стая. „Влез с код“ е за гост, който вече знае, че се включва в чужда стая (прескача направо към Фаза 2Б).</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag common"><i></i>Общо</span><b>00</b>Как ще играете?</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Нова игра</div>
+        <h2 class="scr">Как ще играете?</h2>
+        <div class="modecard sel">
+          <div class="ic">📱</div>
+          <div><h4>Един телефон</h4><p>Подавате си телефона един на друг. Не е нужен интернет за други устройства.</p></div>
+        </div>
+        <div class="modecard">
+          <div class="ic">🔗</div>
+          <div><h4>Всеки на своя телефон</h4><p>Създава се стая с код. Играчите се включват от собствените си телефони — може и по няколко от едно устройство.</p></div>
+        </div>
+        <div style="margin-top:auto"><button class="btn btn-primary">Продължи</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Единственото истинско разклонение в цялото приложение. Изборът определя само следващите 2-3 екрана — играта по-нататък изглежда еднакво.</div>
+  </div>
+
+  </div>
+</div>
+
+<!-- ================= PHASE 1A: LOCAL SETUP ================= -->
+<div class="phase">
+  <div class="phase-head">
+    <div class="no">Фаза 1 · Път А</div>
+    <h3>Един телефон — настройка</h3>
+    <p>Без код, без стая. Отборите се създават един по един — първо име, после играчите му — директно на устройството, което ще се подава.</p>
+  </div>
+  <div class="flow">
+
+  <div class="step">
+    <div class="step-label"><span class="tag a"><i></i>Един телефон</span><b>А1</b>Имена на отборите</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Един телефон · настройка</div>
+        <h2 class="scr">Как се казват<br>отборите?</h2>
+        <div class="teamblock" style="background:var(--teamA);margin-top:14px">
+          <div class="tn">🩷 Отбор 1</div>
+          <div class="textfield" style="border-color:transparent"><span class="ph">Напиши име…</span></div>
+          <div class="chips" style="margin-top:9px">
+            <span class="chip add">Лъвовете</span><span class="chip add">Пицарите</span>
+          </div>
+        </div>
+        <div class="vsdivider">СРЕЩУ</div>
+        <div class="teamblock" style="background:var(--teamB)">
+          <div class="tn">🌊 Отбор 2</div>
+          <div class="textfield" style="border-color:transparent"><span>Тюркоазите</span><span class="cursor"></span></div>
+          <div class="chips" style="margin-top:9px">
+            <span class="chip add">Лисиците</span><span class="chip add">Ракетите</span>
+          </div>
+        </div>
+        <div style="margin-top:auto;padding-top:14px"><button class="btn btn-primary">Продължи → играчите</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Заменя старите отделни екрани за име на отбор 1 и отбор 2 — двете полета вече са на един екран, с истински текстов input (граница + курсор при фокус) вместо статичен .namefield.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag a"><i></i>Един телефон</span><b>А2</b>Играчите на отборите</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Един телефон · настройка</div>
+        <h2 class="scr">Кой играе<br>в отборите?</h2>
+        <div class="twocol capped">
+          <div class="col capped-col" style="background:rgba(255,92,138,.14)">
+            <div class="colhead" style="color:#C2185B">🩷 Розовите</div>
+            <div class="col-scroll">
+              <div class="minirow"><span class="av" style="background:var(--teamA)">М</span>Мария</div>
+              <div class="minirow"><span class="av" style="background:var(--teamA)">И</span>Иво</div>
+              <div class="minirow add">+ Играч</div>
+            </div>
+          </div>
+          <div class="col capped-col" style="background:rgba(0,184,169,.14)">
+            <div class="colhead" style="color:#00877a">🌊 Тюркоазите</div>
+            <div class="col-scroll">
+              <div class="minirow"><span class="av" style="background:var(--teamB)">Г</span>Георги</div>
+              <div class="minirow"><span class="av" style="background:var(--teamB)">А</span>Ани</div>
+              <div class="minirow"><span class="av" style="background:var(--teamB)">П</span>Петър</div>
+              <div class="minirow add">+ Играч</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:auto;padding-top:14px"><button class="btn btn-primary">Продължи → думите</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Заменя старите отделни екрани за играчи на отбор 1 и отбор 2. „+ Играч“ мутира inline в текстово поле на мястото си (без нов екран/sheet) — виж отделния interaction файл. Колоните пазят еднаква височина по подразбиране (flex stretch); от ~5 играча нататък получават таван и вътрешен скрол, за да не изтласкат бутона „Продължи“ извън екрана.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag a"><i></i>Един телефон</span><b>А3</b>Думи — предаване</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Играч 2 от 6 · предаване на телефона</div>
+        <div class="playerbar">
+          <div class="avatar">И</div>
+          <div><div class="nm">Иво пише думите си</div><div class="sub">Само съществителни · никой друг не гледа 🙈</div></div>
+        </div>
+        <div class="dots">
+          <div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div class="wordlist">
+          <div class="wrow"><span class="n">01</span><span class="w">хладилник</span></div>
+          <div class="wrow"><span class="n">02</span><span class="w">пеперуда</span></div>
+          <div class="wrow"><span class="n">03</span><span class="w">космонавт</span></div>
+          <div class="wrow"><span class="n">04</span><span class="w">баница</span></div>
+          <div class="wrow empty"><span class="n">05</span><span class="w">напиши дума…</span></div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:12px">Готово — предай телефона</button>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Телефонът обикаля всички 6 играчи един по един — точно тази обиколка е „режим Един телефон“ по същество.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag a"><i></i>Един телефон</span><b>А4</b>Всичко е готово · предаване</div>
+    <div class="phone"><div class="screen dark s4" style="background:var(--ink)"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content rdy">
+        <div class="eyebrow" style="color:#B7B3D6;margin-top:4px">Всичко е готово ✓</div>
+        <div class="bowl">
+          <div class="mini" style="top:8px;left:12px;transform:rotate(-9deg)">котка</div>
+          <div class="mini" style="top:-4px;right:8px;transform:rotate(7deg)">луна</div>
+          <div class="mini" style="top:30px;left:64px;transform:rotate(3deg);background:var(--sun)">море</div>
+          <div class="mini" style="top:16px;right:34px;transform:rotate(-4deg)">баница</div>
+          <div class="b"></div>
+        </div>
+        <div class="roundnum">РУНД 1 / 3</div>
+        <div class="roundname">Свободно<br>обяснение</div>
+        <div class="rounddesc">Обяснявай с колкото искаш думи, но не използвай корена на думата от листчето.</div>
+        <div class="rpills"><span class="rpill on">Думи</span><span class="rpill">1 дума</span><span class="rpill">Мимики</span></div>
+        <div class="handto"><small>Първи обяснява</small><b>Иван</b></div>
+        <button class="btn btn-sun">Дай телефона на Иван</button>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Идва веднага след последния играч в А3. Обединява „купата е пълна“, правилата на Рунд 1 и предаването към първия обясняващ — в режим „Един телефон“ замества отделния екран 02 за Рунд 1.</div>
+  </div>
+
+  </div>
+</div>
+
+<!-- ================= PHASE 1B: ROOM SETUP ================= -->
+<div class="phase">
+  <div class="phase-head">
+    <div class="no">Фаза 1 · Път Б</div>
+    <h3>Стая с код — настройка</h3>
+    <p>Домакинът създава стая; всеки друг влиза с код или QR — от собствения си телефон. „Кой играе от този телефон?“ е новият общ въпрос: важи еднакво дали влизаш сам или с приятел до теб.</p>
+  </div>
+  <div class="flow">
+
+  <div class="step">
+    <div class="step-label"><span class="tag b"><i></i>Стая · домакин</span><b>Б1</b>Стаята е готова</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Стая · чакаме играчи</div>
+        <div class="codecard">
+          <div class="lbl">КОД НА СТАЯТА</div>
+          <div class="code">ЛИСТ-42</div>
+          <div class="qr">
+            <i></i><i></i><i></i><i class="o"></i><i></i><i></i><i></i>
+            <i></i><i class="o"></i><i></i><i></i><i class="o"></i><i class="o"></i><i></i>
+            <i></i><i></i><i class="o"></i><i></i><i></i><i class="o"></i><i></i>
+            <i class="o"></i><i></i><i></i><i class="o"></i><i></i><i></i><i class="o"></i>
+            <i></i><i class="o"></i><i></i><i></i><i class="o"></i><i></i><i></i>
+            <i></i><i class="o"></i><i class="o"></i><i></i><i></i><i class="o"></i><i></i>
+            <i></i><i></i><i></i><i class="o"></i><i></i><i></i><i></i>
+          </div>
+          <div class="share"><span>📤 Сподели линк</span><span>📋 Копирай</span></div>
+        </div>
+        <div class="joinlist">
+          <div class="joinrow"><span class="av" style="background:#7b61ff">М</span>Мария (ти) <span class="st">домакин</span></div>
+          <div class="joinrow"><span class="av" style="background:var(--teamB)">Г</span>Георги <span class="st">влезе ✓</span></div>
+          <div class="joinrow pending"><span class="av" style="background:var(--muted)">…</span>Чакаме още играчи <span class="st">2 влезли</span></div>
+        </div>
+        <div style="margin-top:auto"><button class="btn btn-primary">Към отборите →</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Домакинът е този, който натисна „Стая с код“ на предния екран. Списъкът се пълни на живо.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag b"><i></i>Стая · гост</span><b>Б1</b>Влизане с код</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Влез в стая</div>
+        <h2 class="scr">Въведи кода<br>от домакина</h2>
+        <div class="codeboxes">
+          <div class="cbox">Л</div><div class="cbox">И</div><div class="cbox">С</div><div class="cbox">Т</div>
+          <div class="cbox">4</div><div class="cbox active empty">2</div>
+        </div>
+        <div style="text-align:center"><button class="btn btn-ghost" style="width:auto;padding:10px 18px;font-size:13px">📷 Сканирай QR</button></div>
+        <div class="namefield">Ани <span>твоето име</span></div>
+        <div style="margin-top:auto"><button class="btn btn-sun">Влез в стаята</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Стартовата точка и за „Влез с код“ от начaлния екран. Едно име тук е достатъчно — възможността да добавиш още играч идва веднага на следващия екран.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag b"><i></i>Стая · всички</span><b>Б2</b>Кой играе от този телефон?</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Стая ЛИСТ-42</div>
+        <h2 class="scr">Кой ще играе от<br>този телефон?</h2>
+        <div class="devrow"><span class="av" style="background:var(--teamA)">А</span>Ани <span class="x">✕</span></div>
+        <div class="devrow add">+ Добави още един играч</div>
+        <div class="hintcard">💡 Ако сте двама (или повече) на един телефон, добавете всички тук — дори да сте в различни отбори. Ако си сам, просто продължи.</div>
+        <div style="margin-top:auto"><button class="btn btn-sun">Влизаме — 1 играч</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Този екран винаги се показва след влизане в стая — за домакина и за всеки гост. Без него нямаше как приложението да разбере кога две устройства всъщност са три играча.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag shared"><i></i>Споделено у-во</span><b>Б2</b>… при двама на телефона</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Стая ЛИСТ-42</div>
+        <h2 class="scr">Кой ще играе от<br>този телефон?</h2>
+        <div class="devrow"><span class="av" style="background:var(--teamA)">И</span>Иво <span class="x">✕</span></div>
+        <div class="devrow"><span class="av" style="background:var(--teamB)">Д</span>Деси <span class="x">✕</span></div>
+        <div class="devrow add">+ Добави още един играч</div>
+        <div class="hintcard">💡 Иво и Деси споделят този телефон и дори могат да са в различни отбори — приложението ще се погрижи кой какво вижда по-нататък.</div>
+        <div style="margin-top:auto"><button class="btn btn-sun">Влизаме — 2 играчи</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Същият екран като вляво — само с втори ред добавен. Затова не е нужен отделен „хибриден режим“: устройството просто носи повече от един играч.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag b"><i></i>Стая · всички</span><b>Б3</b>Отбори</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Стая ЛИСТ-42 · 6 играчи · 5 телефона</div>
+        <h2 class="scr">Отбори</h2>
+        <div class="teamcol" style="background:var(--teamA)">
+          <div class="tn">🩷 Розовите <span class="cnt">3 играчи</span></div>
+          <div class="chips">
+            <span class="chip you">Мария (ти)</span>
+            <span class="chip grouped"><span class="ph">📱²</span>Иво</span>
+            <span class="chip">Петър</span>
+          </div>
+        </div>
+        <div class="teamcol" style="background:var(--teamB)">
+          <div class="tn">🌊 Тюркоазите <span class="cnt">3 играчи</span></div>
+          <div class="chips">
+            <span class="chip">Георги</span>
+            <span class="chip grouped"><span class="ph">📱²</span>Деси</span>
+            <span class="chip">Ани</span>
+          </div>
+        </div>
+        <div class="hintline">📱² = играч, който споделя телефон с още някого. Домакинът може и да разбърка на случаен принцип.</div>
+        <div style="margin-top:auto"><button class="btn btn-primary">Започни — всички пишат думи</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Единствената разлика спрямо режим „Един телефон“: тук картите показват устройства, не просто имена — бадж 📱² се появява само когато има за какво.</div>
+  </div>
+
+  </div>
+</div>
+
+<!-- ================= PHASE 1B+: SHARED DEVICE WORDS ================= -->
+<div class="phase">
+  <div class="phase-head">
+    <div class="no">Фаза 1 · Път Б (продължение)</div>
+    <h3>Стая — писане на думи</h3>
+    <p>Играчите на отделни телефони пишат едновременно. Играчите на споделено устройство минават през кратко локално предаване — същия механизъм като режим „Един телефон“, вложен вътре в стаята.</p>
+  </div>
+  <div class="flow">
+
+  <div class="step">
+    <div class="step-label"><span class="tag b"><i></i>Стая · собствен телефон</span><b>Б4</b>Думи — паралелно</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Твоите 10 думи · само съществителни</div>
+        <div class="dots">
+          <div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div class="wordlist">
+          <div class="wrow"><span class="n">01</span><span class="w">хладилник</span></div>
+          <div class="wrow"><span class="n">02</span><span class="w">пеперуда</span></div>
+          <div class="wrow"><span class="n">03</span><span class="w">космонавт</span></div>
+          <div class="wrow"><span class="n">04</span><span class="w">баница</span></div>
+          <div class="wrow empty"><span class="n">05</span><span class="w">напиши дума…</span></div>
+        </div>
+        <div class="progressbar">
+          <div class="t"><span>Готови играчи</span><span>4 / 6</span></div>
+          <div class="bar"><i></i></div>
+        </div>
+        <button class="btn btn-dis" style="margin-top:10px">Готов съм (10/10)</button>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Никой не чака своя ред — за играч на собствен телефон думите винаги се пишат така. Долу се вижда на живо колко играчи от цялата стая са приключили.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag shared"><i></i>Споделено у-во</span><b>Б4а</b>Локално предаване</div>
+    <div class="phone"><div class="screen dark handoff"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow" style="color:rgba(255,255,255,.8)">Този телефон · играч 2 от 2</div>
+        <div class="bigavatar" style="color:#5d43e8;margin-top:16px">Д</div>
+        <div class="who">Дай телефона<br>на Деси</div>
+        <div class="sub">Иво вече написа своите 10 думи ✓</div>
+        <div class="privnote">🙈 Думите на Иво са скрити — Деси ще види само празни листчета.</div>
+        <div style="margin-top:auto;width:100%"><button class="btn" style="background:#fff;color:#5d43e8;box-shadow:0 6px 0 rgba(0,0,0,.2)">Аз съм Деси — започвам</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Само тук: устройството обикаля своите 2 играча (Б4а → Б4б), докато останалите пишат паралелно на своите. Стайният прогрес брои играчи (6), не телефони.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag shared"><i></i>Споделено у-во</span><b>Б4б</b>Пише вторият играч</div>
+    <div class="phone"><div class="screen light"><div class="island"></div>
+      <div class="devbadge">📱² Иво + Деси</div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="userbar">
+          <div class="av" style="background:var(--teamB)">Д</div>
+          <div><div class="nm">Деси пише думите си</div><div class="sub">Само съществителни</div></div>
+          <div class="next">Иво ✓</div>
+        </div>
+        <div class="dots">
+          <div class="dot on"></div><div class="dot on"></div><div class="dot on"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div class="wordlist">
+          <div class="wrow"><span class="n">01</span><span class="w">вулкан</span></div>
+          <div class="wrow"><span class="n">02</span><span class="w">чадър</span></div>
+          <div class="wrow"><span class="n">03</span><span class="w">библиотека</span></div>
+          <div class="wrow empty"><span class="n">04</span><span class="w">напиши дума…</span></div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:10px">Готова съм</button>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Баджът горе вдясно винаги показва кои играчи седят на това устройство; лентата показва кой точно го държи в момента.</div>
+  </div>
+
+  </div>
+</div>
+
+<!-- ================= PHASE 2: ROUND INTRO (COMMON) ================= -->
+<div class="phase">
+  <div class="phase-head">
+    <div class="no">Фаза 2 — пътищата се сливат</div>
+    <h3>Начало на рунд</h3>
+    <p>От тук нататък няма значение как е стартирала играта. Един екран, три пъти по един за всеки рунд.</p>
+  </div>
+  <div class="flow">
+
+  <div class="step">
+    <div class="step-label"><span class="tag common"><i></i>Общо</span><b>02</b>Начало на рунд</div>
+    <div class="phone"><div class="screen dark s4"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="roundnum">РУНД 1 / 3</div>
+        <div class="roundname">Свободно<br>обяснение</div>
+        <div class="rounddesc">Обяснявай с колкото искаш думи, но не използвай корена на думата от листчето.</div>
+        <div class="rpills">
+          <span class="rpill on">Думи</span>
+          <span class="rpill">1 дума</span>
+          <span class="rpill">Мимики</span>
+        </div>
+        <div style="width:100%"><button class="btn btn-sun">Ясно, започваме</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Общ екран за начало на Рунд 1 в режим „Стая“ (в режим „Един телефон“ Рунд 1 започва от А4). Рунд 2 и 3 имат свои екрани — виж 02б и 02в, защото там има пренесено време.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag common"><i></i>Общо</span><b>02б</b>Рунд 2 — продължаване</div>
+    <div class="phone"><div class="screen dark s4" style="background:var(--ink)"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content rdy">
+        <div class="eyebrow" style="color:#B7B3D6;margin-top:4px">Купата е разбъркана</div>
+        <div class="bowl">
+          <div class="mini" style="top:8px;left:12px;transform:rotate(-9deg)">котка</div>
+          <div class="mini" style="top:-4px;right:8px;transform:rotate(7deg)">луна</div>
+          <div class="mini" style="top:30px;left:64px;transform:rotate(3deg);background:var(--sun)">море</div>
+          <div class="mini" style="top:16px;right:34px;transform:rotate(-4deg)">баница</div>
+          <div class="b"></div>
+        </div>
+        <div class="roundnum">РУНД 2 / 3</div>
+        <div class="roundname">Само една<br>дума</div>
+        <div class="rounddesc">Същите листчета, но имаш право на една-единствена дума за всяко.</div>
+        <div class="rpills"><span class="rpill">Думи</span><span class="rpill on">1 дума</span><span class="rpill">Мимики</span></div>
+        <div class="handto"><small>Продължава с оставащото време</small><b>Мария <span>· 0:23</span></b></div>
+        <button class="btn btn-sun">Дай телефона на Мария</button>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Рунд 2 не започва нов играч: телефонът отива при този, който е отгатнал последния лист в Рунд 1 — той продължава с пренесеното си време (виж „Край на рунда“). Ако времето е свършило точно на 0:00, няма пренос и се показва варианта „Първи обяснява“ като в А4.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag common"><i></i>Общо</span><b>02в</b>Рунд 3 — продължаване</div>
+    <div class="phone"><div class="screen dark s4" style="background:var(--ink)"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content rdy">
+        <div class="eyebrow" style="color:#B7B3D6;margin-top:4px">Купата е разбъркана</div>
+        <div class="bowl">
+          <div class="mini" style="top:8px;left:12px;transform:rotate(-9deg)">котка</div>
+          <div class="mini" style="top:-4px;right:8px;transform:rotate(7deg)">луна</div>
+          <div class="mini" style="top:30px;left:64px;transform:rotate(3deg);background:var(--sun)">море</div>
+          <div class="mini" style="top:16px;right:34px;transform:rotate(-4deg)">баница</div>
+          <div class="b"></div>
+        </div>
+        <div class="roundnum">РУНД 3 / 3</div>
+        <div class="roundname">Мимики и<br>жестове</div>
+        <div class="rounddesc">Без говорене и без звуци — само с тяло и жестове.</div>
+        <div class="rpills"><span class="rpill">Думи</span><span class="rpill">1 дума</span><span class="rpill on">Мимики</span></div>
+        <div class="handto"><small>Продължава с оставащото време</small><b>Георги <span>· 0:17</span></b></div>
+        <button class="btn btn-sun">Дай телефона на Георги</button>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Същата логика като 02б: довършилият Рунд 2 продължава с оставащото си време. Само номерът, описанието и активният pill се менят.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag a"><i></i>Един телефон</span><b>03</b>Предай на следващия</div>
+    <div class="phone"><div class="screen dark s5" style="background:linear-gradient(170deg,var(--teamA) 0%,#e0447a 100%)"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow" style="color:rgba(255,255,255,.8)">На ред е</div>
+        <div class="bigavatar" style="margin-top:18px">М</div>
+        <div class="who">Мария</div>
+        <div class="team">ОТБОР РОЗОВИТЕ</div>
+        <div class="carrynote">⏱ Имаш пренесени <b>0:23</b> от миналия рунд — таймерът продължава оттам.</div>
+        <div style="margin-top:auto;width:100%"><button class="btn" style="background:#fff;color:var(--teamA);box-shadow:0 6px 0 rgba(0,0,0,.2)">Готова съм — старт!</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">В режим „Един телефон“ това е екранът между всеки два хода — целият екран е в цвета на отбора на играча.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag shared"><i></i>Споделено у-во</span><b>03</b>Предай на съседа на телефона</div>
+    <div class="phone"><div class="screen dark handoff"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow" style="color:rgba(255,255,255,.8)">Този телефон · играч 1 от 2</div>
+        <div class="bigavatar" style="color:#5d43e8;margin-top:16px">И</div>
+        <div class="who">Дай телефона<br>на Иво</div>
+        <div class="sub">Негов ред е да обяснява за Розовите</div>
+        <div style="margin-top:auto;width:100%"><button class="btn" style="background:#fff;color:#5d43e8;box-shadow:0 6px 0 rgba(0,0,0,.2)">Аз съм Иво — старт!</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">В стая, само за споделените устройства: преди твоя ход телефонът първо трябва да стигне физически до теб, ако в момента е у съотборника ти на същото устройство.</div>
+  </div>
+
+  </div>
+</div>
+
+<!-- ================= PHASE 3: TURN — ROLE VARIANTS ================= -->
+<div class="phase">
+  <div class="phase-head">
+    <div class="no">Фаза 3</div>
+    <h3>Ход — 4 екрана според ролята ти точно сега</h3>
+    <p>Едно и също 60-секундно завъртане на телефона се вижда различно на всяко устройство. В режим „Един телефон“ единствената роля е „обясняващ“ (виждате го всички наведнъж, устно). В стая всяко устройство пресмята автоматично коя от следните роли да покаже.</p>
+  </div>
+  <div class="flow">
+
+  <div class="step">
+    <div class="step-label"><span class="role" style="background:#3DDC97;color:#0d3b28">ОБЯСНЯВАЩ</span><b>04</b>Твоят ход</div>
+    <div class="phone"><div class="screen dark sturn"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="timer">
+          <svg width="120" height="120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="8"/>
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#FFD93D" stroke-width="8" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="98"/>
+          </svg>
+          <div class="tt">0:42</div>
+        </div>
+        <div class="slip gameslip"><div class="slip-word">пеперуда</div></div>
+        <div class="meta">
+          <div>В купата<b>14 листчета</b></div>
+          <div style="text-align:center">Този ход<b>+3</b></div>
+          <div style="text-align:right">Рунд<b>1 · Думи</b></div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-got">Позна! ✓</button>
+          <button class="btn btn-skip">Пропусни (връща се в купата)</button>
+        </div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note"><span class="tag common"><i></i>Общо</span> Идентичен екран и в двата режима. Само обясняващият вижда думата и бутоните — той единствен може да маркира отгатнати думи.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="role" style="background:var(--teamA)">СЪОТБОРНИК</span><b>04</b>Твоят отбор играе</div>
+    <div class="phone"><div class="screen dark sturn"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="timer">
+          <svg width="120" height="120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="8"/>
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#FFD93D" stroke-width="8" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="98"/>
+          </svg>
+          <div class="tt">0:42</div>
+        </div>
+        <div class="guesspulse"><div class="in">🗣️</div></div>
+        <div style="font-family:var(--display);font-weight:900;font-size:20px;margin-top:16px;text-align:center">Мария обяснява —<br>познавайте на глас!</div>
+        <div class="livefeed">
+          <div class="feedrow">✓ Познахте: <span class="fw">космонавт</span></div>
+          <div class="feedrow">✓ Познахте: <span class="fw">баница</span></div>
+        </div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note"><span class="tag b"><i></i>Стая</span> Само в режим „Стая“ — на собствен телефон на съотборник. Думата е скрита; лентата долу показва вече отгатнатите на живо.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="role" style="background:var(--teamB)">ДРУГИЯТ ОТБОР</span><b>04</b>Контрол на правилата</div>
+    <div class="phone"><div class="screen dark sturn watch"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow" style="color:#B7B3D6">Вие сте контрольори 👀</div>
+        <div class="timer" style="margin-top:10px">
+          <svg width="120" height="120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="8"/>
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#FFD93D" stroke-width="8" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="98"/>
+          </svg>
+          <div class="tt">0:42</div>
+        </div>
+        <div class="slip gameslip"><div class="slip-word">пеперуда</div></div>
+        <div style="font-size:13px;font-weight:700;color:#B7B3D6;text-align:center;margin-top:14px;line-height:1.5">Мария обяснява тази дума на Розовите.<br>Следете да не използва корена ѝ!</div>
+        <div class="actions">
+          <button class="reportbtn">✋ Нарушение — използва корена</button>
+        </div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note"><span class="tag b"><i></i>Стая</span> На телефон на играч от другия отбор, ако устройството е „чисто“ (никой съотборник на обясняващия на него). Вижда думата, за да пази правилата — както при надничане в листче на живо.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="role" style="background:#7b61ff">СМЕСЕНО УСТРОЙСТВО</span><b>04</b>Заключено</div>
+    <div class="phone"><div class="screen dark sturn"><div class="island"></div>
+      <div class="devbadge">📱² Иво + Деси</div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="timer">
+          <svg width="120" height="120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="8"/>
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#FFD93D" stroke-width="8" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="98"/>
+          </svg>
+          <div class="tt">0:42</div>
+        </div>
+        <div class="guesspulse"><div class="in">🗣️</div></div>
+        <div style="font-family:var(--display);font-weight:900;font-size:19px;margin-top:14px;text-align:center">Мария обяснява<br>на Розовите</div>
+        <div class="lockcard">
+          <span class="ic">🔒</span>
+          <p>Думата е скрита, защото <b>Иво е съотборник</b> на Мария. Контролът за Тюркоазите остава при „чистите“ телефони на Георги и Ани.</p>
+        </div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note"><span class="tag shared"><i></i>Споделено у-во</span> Ключовото правило на цялото приложение: ако на едно устройство има поне един съотборник на обясняващия, думата НЕ се показва там — дори устройството да съдържа и играч от другия отбор.</div>
+  </div>
+
+  </div>
+</div>
+
+<!-- ================= PHASE 4: ROUND END (COMMON, host/guest variant) ================= -->
+<div class="phase">
+  <div class="phase-head">
+    <div class="no">Фаза 4</div>
+    <h3>Край на рунда</h3>
+    <p>Резултатите се показват еднакво навсякъде. Разликата е само по кой бутон продължава играта.</p>
+  </div>
+  <div class="flow">
+
+  <div class="step">
+    <div class="step-label"><span class="tag a"><i></i>Един телефон</span><b>05</b>Край на рунда</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Купата е празна</div>
+        <h2 class="scr">Рунд 1<br>приключи 🎉</h2>
+        <div class="scorecard" style="background:var(--teamA)">
+          <div><div class="tn2">🩷 Розовите</div><div class="sub2">+12 листчета този рунд</div></div>
+          <div class="pts">12</div>
+        </div>
+        <div class="scorecard" style="background:var(--teamB)">
+          <div><div class="tn2">🌊 Тюркоазите</div><div class="sub2">+8 листчета този рунд</div></div>
+          <div class="pts">8</div>
+        </div>
+        <div class="carrycard">
+          <div class="ic">⏸</div>
+          <p>Времето на <b>Мария</b> е паузирано на <b>0:23</b>. Тя започва Рунд 2 с останалото си време.</p>
+        </div>
+        <div style="margin-top:auto"><button class="btn btn-primary">Разбъркай купата → Рунд 2</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Единственото устройство в играта винаги контролира прехода — затова тук бутонът е директно активен.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag b"><i></i>Стая · домакин</span><b>05</b>Край на рунда</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Купата е празна</div>
+        <h2 class="scr">Рунд 1<br>приключи 🎉</h2>
+        <div class="scorecard" style="background:var(--teamA)">
+          <div><div class="tn2">🩷 Розовите</div><div class="sub2">+12 листчета този рунд</div></div>
+          <div class="pts">12</div>
+        </div>
+        <div class="scorecard" style="background:var(--teamB)">
+          <div><div class="tn2">🌊 Тюркоазите</div><div class="sub2">+8 листчета този рунд</div></div>
+          <div class="pts">8</div>
+        </div>
+        <div class="carrycard">
+          <div class="ic">⏸</div>
+          <p>Времето на <b>Мария</b> е паузирано на <b>0:23</b> — тя започва Рунд 2 с останалото си време.</p>
+        </div>
+        <div style="margin-top:auto"><button class="btn btn-primary">Разбъркай купата → Рунд 2</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Само домакинът вижда активния бутон — той решава кога всички да минат към следващия рунд.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag b"><i></i>Стая · всички останали</span><b>05</b>Изчакване</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Купата е празна</div>
+        <h2 class="scr">Рунд 1<br>приключи 🎉</h2>
+        <div class="scorecard" style="background:var(--teamA)">
+          <div><div class="tn2">🩷 Розовите</div><div class="sub2">+12 листчета този рунд</div></div>
+          <div class="pts">12</div>
+        </div>
+        <div class="scorecard" style="background:var(--teamB)">
+          <div><div class="tn2">🌊 Тюркоазите</div><div class="sub2">+8 листчета този рунд</div></div>
+          <div class="pts">8</div>
+        </div>
+        <div class="waitnote"><span class="spin"></span>Домакинът стартира Рунд 2…</div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Резултатите се синхронизират на всички телефони в стаята в реално време, без нужда да ги виждаш ти лично да ги въвежда никой.</div>
+  </div>
+
+  </div>
+</div>
+
+<!-- ================= PHASE 5: FINALE + RULES (COMMON) ================= -->
+<div class="phase">
+  <div class="phase-head">
+    <div class="no">Фаза 5</div>
+    <h3>Финал и правила</h3>
+    <p>Последната обща точка. И тук е без значение как е започнала играта.</p>
+  </div>
+  <div class="flow">
+
+  <div class="step">
+    <div class="step-label"><span class="tag common"><i></i>Общо</span><b>06</b>Победител</div>
+    <div class="phone"><div class="screen dark s8"><div class="island"></div>
+      <div class="confetti">
+        <i style="top:70px;left:40px;background:#FF5C8A;transform:rotate(20deg)"></i>
+        <i style="top:110px;right:50px;background:#FFD93D;transform:rotate(-30deg)"></i>
+        <i style="top:160px;left:80px;background:#00B8A9;transform:rotate(50deg)"></i>
+        <i style="top:90px;right:110px;background:#fff;transform:rotate(10deg)"></i>
+        <i style="top:190px;right:70px;background:#FF5C8A;transform:rotate(-15deg)"></i>
+        <i style="top:150px;left:30px;background:#FFD93D;transform:rotate(70deg)"></i>
+      </div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="slip trophyslip"><div class="cup">🏆</div><div class="slip-word">Розовите</div></div>
+        <div class="fin">Победители след<br>3 рунда!</div>
+        <div class="score">34 <span>:</span> 27</div>
+        <div style="width:100%">
+          <button class="btn btn-sun">Реванш със същите отбори</button>
+          <button class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3);margin-top:10px">Нова игра</button>
+        </div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">„Нова игра“ тук връща право на екран „Как ще играете?“ — може да смените режима при реванш.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="tag common"><i></i>Общо</span><b>—</b>Как се играе</div>
+    <div class="phone"><div class="screen"><div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>●●● 📶 🔋</span></div>
+      <div class="content">
+        <div class="eyebrow">Правила</div>
+        <h2 class="scr">3 рунда,<br>една купа</h2>
+        <div class="rulecard r1">
+          <div class="rn">1</div>
+          <div><h4>Свободно обяснение</h4><p>Описвай думата с други думи. Забранено е да използваш корена ѝ.</p></div>
+        </div>
+        <div class="rulecard r2">
+          <div class="rn">2</div>
+          <div><h4>Само една дума</h4><p>Същите листчета, но имаш право на една-единствена дума за всяко.</p></div>
+        </div>
+        <div class="rulecard r3">
+          <div class="rn">3</div>
+          <div><h4>Мимики и жестове</h4><p>Без говорене и без звуци — само с тяло и жестове.</p></div>
+        </div>
+        <div class="rulecard r4">
+          <div class="rn">📱</div>
+          <div><h4>Един или повече телефони</h4><p>Играе се еднакво — с подаване на един телефон или всеки със свой в обща стая.</p></div>
+        </div>
+        <div style="margin-top:auto"><button class="btn btn-primary">Назад</button></div>
+      </div>
+      <div class="homebar"></div>
+    </div></div>
+    <div class="step-note">Достъпен от началния екран по всяко време. Четвъртата карта е новата — обяснява накратко, че режимът на телефоните не променя правилата на самата игра.</div>
+  </div>
+
+  </div>
+</div>
+
+</body>
+</html>

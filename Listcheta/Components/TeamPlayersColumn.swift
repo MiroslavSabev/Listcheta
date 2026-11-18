@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Model
 
@@ -14,73 +15,92 @@ struct TeamPlayer: Identifiable, Equatable {
 
 // MARK: - Team Players Column
 //
-// Mirrors "Фаза 1А · Играчите на отборите" from the HTML design file:
-// .col → this view · .minirow → playerRow · .minirow.add → addRow ·
-// .minirow.editing → editingRow.
-//
-// Behavior (per the design discussion):
-// - Tapping "+ Играч" morphs that row into an editable field in place
-//   (no new screen/sheet).
-// - The field auto-focuses the keyboard; Return/Done commits the name.
-// - On commit, the row freezes into a normal player row (initial in
-//   the avatar), and a fresh editing row immediately reopens below it,
-//   so the person can type several names back-to-back.
-// - Submitting an empty field just closes the row back to "+ Играч" —
-//   no confirm button inside the row.
-//
-// Swap the Color/Font tokens below for your real ones if the names
-// differ from the design-system tokens (color.ink, color.paper, ...).
+// Поведение:
+// - Тап на "+ Играч" отваря поле за име (с клавиатура).
+// - Щом започнеш да пишеш, под полето се появява нов ред "+ Играч".
+// - Return или тап на "+ Играч": името се записва и полето се изчиства,
+//   без клавиатурата да мърда (фокусът никога не се губи).
+// - Тап извън полето (полето приключва редакция): написаното име се записва.
+// - Празно поле при Return или загуба на фокус: редът просто се затваря.
+// - Максимум 10 играча в отбор: при 10-ия редът за добавяне изчезва.
+// - Колоната няма собствен скрол — расте, а екранът се превърта до реда за писане.
+// - onScrollNeeded(rowID, keyboardAppearing): казва на екрана до кой ред да превърти.
+//   keyboardAppearing = true → клавиатурата тепърва се показва (по-дълго изчакване).
 
 struct TeamPlayersColumn: View {
     let teamName: String
     let teamColor: Color
     let headerTextColor: Color
     @Binding var players: [TeamPlayer]
+    var maxPlayers: Int = 10
+    var onScrollNeeded: (_ rowID: String, _ keyboardAppearing: Bool) -> Void = { _, _ in }
 
     @State private var draftName: String = ""
     @State private var isAddingPlayer: Bool = false
-    @FocusState private var isDraftFocused: Bool
 
-    private let rowHeight: CGFloat = 40 // approx. minirow height incl. spacing
+    // уникално id на реда за писане — по него екранът го намира
+    private var editingRowID: String { "editingRow-\(teamName)" }
+
+    private var hasDraftText: Bool {
+        !draftName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private var isFull: Bool {
+        players.count >= maxPlayers
+    }
+
+    // "+ Играч" се вижда:
+    // - когато не пишем и има място, или
+    // - докато пишем име и след него ще остане място за още един
+    private var showsAddRow: Bool {
+        if isAddingPlayer {
+            return hasDraftText && players.count + 1 < maxPlayers
+        }
+        return !isFull
+    }
 
     var body: some View {
         VStack(spacing: 12) {
-            Text(teamName.uppercased())
-                .font(.custom("Unbounded-Bold", size: 11.5)) // exact PostScript name may differ
-                .foregroundStyle(headerTextColor)
-                .padding(.top, 8)
+            VStack(spacing: 2) {
+                Text(teamName.uppercased())
+                    .font(.custom("Unbounded-Bold", size: 11.5))
+                    .foregroundStyle(headerTextColor)
 
-            ScrollViewReader { proxy in
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 7) {
-                        ForEach(players) { player in
-                            playerRow(player)
-                        }
+                Text("\(players.count)/\(maxPlayers)")
+                    .font(.custom("Manrope-Bold", size: 11))
+                    .foregroundStyle(Color.listchetaMuted)
+            }
+            .padding(.top, 8)
 
-                        if isAddingPlayer {
-                            editingRow
-                                .id("editingRow")
-                        } else {
-                            addRow
-                        }
-                    }
-                    .padding(.trailing, 2)
+            VStack(spacing: 7) {
+                ForEach(players) { player in
+                    playerRow(player)
                 }
-                .frame(
-                    maxHeight: CGFloat(players.count + 4) * rowHeight
-                )
-                .onChange(of: isAddingPlayer) { _, adding in
-                    guard adding else { return }
-                    withAnimation {
-                        proxy.scrollTo("editingRow", anchor: .bottom)
-                    }
+
+                if isAddingPlayer && !isFull {
+                    editingRow
+                        .id(editingRowID)
+                }
+
+                if showsAddRow {
+                    addRow
                 }
             }
+            .padding(.trailing, 2)
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .padding(12)
         .background(teamColor.opacity(0.14))
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .onChange(of: isAddingPlayer) { _, adding in
+            // отваряне на поле → екранът чака клавиатурата и скролва до реда
+            if adding { onScrollNeeded(editingRowID, true) }
+        }
+        .onChange(of: players.count) { _, _ in
+            // нов играч добавен, докато пишем → клавиатурата вече е горе
+            guard isAddingPlayer else { return }
+            onScrollNeeded(editingRowID, false)
+        }
     }
 
     // MARK: Rows
@@ -125,12 +145,17 @@ struct TeamPlayersColumn: View {
                     )
                 )
 
-            TextField("Име", text: $draftName)
-                .font(.custom("Manrope-SemiBold", size: 12.5))
-                .foregroundStyle(Color.listchetaInk)
-                .focused($isDraftFocused)
-                .submitLabel(.next) // reads as "Next" on the keyboard's Return key
-                .onSubmit(commitDraft)
+            NameTextField(
+                text: $draftName,
+                placeholder: "Име",
+                onSubmit: { commitDraft(keepAdding: true) },
+                onEndEditing: {
+                    // тап извън полето / скрита клавиатура → запази написаното
+                    guard isAddingPlayer else { return }
+                    commitDraft(keepAdding: false)
+                }
+            )
+            .frame(height: 20)
 
             Spacer(minLength: 0)
         }
@@ -142,17 +167,18 @@ struct TeamPlayersColumn: View {
         )
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         .shadow(color: Color.listchetaInk.opacity(0.07), radius: 3, x: 0, y: 2)
-        .task {
-            // auto-focus the keyboard the instant the row appears
-            isDraftFocused = true
-        }
     }
 
     private var addRow: some View {
         Button {
-            draftName = ""
-            withAnimation(.easeOut(duration: 0.15)) {
-                isAddingPlayer = true
+            if isAddingPlayer {
+                // пишем в момента → запиши и изчисти полето (клавиатурата остава)
+                commitDraft(keepAdding: true)
+            } else {
+                draftName = ""
+                withAnimation(.easeOut(duration: 0.15)) {
+                    isAddingPlayer = true
+                }
             }
         } label: {
             Text("+ Играч")
@@ -184,25 +210,109 @@ struct TeamPlayersColumn: View {
 
     // MARK: Commit logic
 
-    private func commitDraft() {
+    private func commitDraft(keepAdding: Bool) {
         let trimmed = draftName.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            // empty submit: just close the row, nothing added
-            withAnimation(.easeOut(duration: 0.15)) {
-                isAddingPlayer = false
-            }
+        let canAppend = !trimmed.isEmpty && !isFull
+        draftName = ""
+
+        if canAppend {
+            players.append(TeamPlayer(name: trimmed))
+        }
+
+        if keepAdding && canAppend && players.count < maxPlayers {
+            // оставаме в режим на добавяне: същото поле, клавиатурата не се пипа
             return
         }
-        players.append(TeamPlayer(name: trimmed))
-        draftName = ""
-        // back to "+ Играч" — the person taps again to add the next one
+
+        // празно поле или достигнат лимит → затваряме реда
+        // (махането на полето само сваля клавиатурата)
         withAnimation(.easeOut(duration: 0.15)) {
             isAddingPlayer = false
         }
     }
 }
 
-// MARK: - Design tokens (swap for your real ones if named differently)
+// MARK: - NameTextField
+//
+// UITextField, който не затваря клавиатурата при Return
+// (textFieldShouldReturn връща false), така че няма "потъване" на клавиатурата.
+
+private struct NameTextField: UIViewRepresentable {
+    @Binding var text: String
+    var placeholder: String
+    var onSubmit: () -> Void
+    var onEndEditing: () -> Void
+
+    func makeUIView(context: Context) -> UITextField {
+        let field = UITextField()
+        field.delegate = context.coordinator
+        field.font = UIFont(name: "Manrope-SemiBold", size: 12.5)
+            ?? .systemFont(ofSize: 12.5, weight: .semibold)
+        field.textColor = UIColor(red: 0x26 / 255, green: 0x22 / 255, blue: 0x4A / 255, alpha: 1)
+        field.tintColor = UIColor(red: 0x26 / 255, green: 0x22 / 255, blue: 0x4A / 255, alpha: 1)
+        field.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [
+                .foregroundColor: UIColor(red: 0x26 / 255, green: 0x22 / 255, blue: 0x4A / 255, alpha: 0.28),
+                .font: field.font as Any
+            ]
+        )
+        field.returnKeyType = .next
+        field.autocapitalizationType = .words
+        field.addTarget(context.coordinator,
+                        action: #selector(Coordinator.textChanged(_:)),
+                        for: .editingChanged)
+        field.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        field.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        // авто-фокус веднага щом полето се появи
+        DispatchQueue.main.async {
+            field.becomeFirstResponder()
+        }
+        return field
+    }
+
+    func updateUIView(_ uiView: UITextField, context: Context) {
+        context.coordinator.parent = self
+        if uiView.text != text {
+            uiView.text = text
+        }
+    }
+
+    func sizeThatFits(_ proposal: ProposedViewSize,
+                      uiView: UITextField,
+                      context: Context) -> CGSize? {
+        CGSize(width: proposal.width ?? 100,
+               height: uiView.intrinsicContentSize.height)
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    final class Coordinator: NSObject, UITextFieldDelegate {
+        var parent: NameTextField
+
+        init(_ parent: NameTextField) {
+            self.parent = parent
+        }
+
+        @objc func textChanged(_ sender: UITextField) {
+            parent.text = sender.text ?? ""
+        }
+
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            parent.onSubmit()
+            return false // клавиатурата остава отворена
+        }
+
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            parent.onEndEditing()
+        }
+    }
+}
+
+// MARK: - Design tokens
 
 private extension Color {
     static let listchetaInk = Color(hex: "#26224A")
@@ -223,7 +333,7 @@ private extension Color {
     }
 }
 
-// MARK: - Preview (mirrors the А2 mockup: two columns side by side)
+// MARK: - Preview
 
 #Preview {
     struct PreviewHost: View {
